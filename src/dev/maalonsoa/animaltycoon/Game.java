@@ -1,5 +1,8 @@
 package dev.maalonsoa.animaltycoon;
 
+import java.awt.*;
+import java.awt.image.BufferStrategy;
+
 enum GameStatus {
     GAME_ACTIVE,
     GAME_PAUSE,
@@ -13,6 +16,9 @@ public class Game implements Runnable {
     private GameStatus gameStatus;
 
     private Thread thread;
+
+    private BufferStrategy bs;
+    private Graphics g;
 
     public Game(String title, int width, int height) {
         display = new Display(title, width, height);
@@ -31,7 +37,17 @@ public class Game implements Runnable {
     }
 
     private void render() {
+        bs = display.getCanvas().getBufferStrategy();
+        if(bs == null){
+            display.getCanvas().createBufferStrategy(3);
+            return;
+        }
+        g = bs.getDrawGraphics();
+        //Draw here
 
+        //End draw
+        bs.show();
+        g.dispose();
     }
 
     private void tick() {
