@@ -2,7 +2,9 @@ package dev.maalonsoa.animaltycoon;
 
 public class Launcher {
     public static void main(String[] args) {
-        Game game = new Game("Animal Tycon", 1920, 1080);
+        final int scrWidth = 1920;
+        final int scrHeight = 1080;
+        Game game = new Game("Animal Tycoon", scrWidth, scrHeight);
         game.start();
     }
 }

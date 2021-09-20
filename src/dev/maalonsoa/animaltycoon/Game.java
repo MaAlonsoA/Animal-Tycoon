@@ -12,22 +12,22 @@ enum GameStatus {
 
 public class Game implements Runnable {
 
-    private Display display;
-    private GameStatus gameStatus;
-
+    private final Display display;
+    private final GameStatus gameStatus;
+    private final int scrWidth;
+    private final int scrHeight;
     private Thread thread;
 
-    private BufferStrategy bs;
-    private Graphics g;
-
-    public Game(String title, int width, int height) {
-        display = new Display(title, width, height);
+    public Game(String title, int scrWidth, int scrHeight) {
+        this.scrWidth = scrWidth;
+        this.scrHeight = scrHeight;
+        display = new Display(title, scrWidth, scrHeight);
         gameStatus = GameStatus.GAME_ACTIVE;
     }
 
     public void run() {
 
-        while (gameStatus != GameStatus.GAME_END){
+        while (gameStatus != GameStatus.GAME_END) {
             tick();
             render();
 
@@ -37,12 +37,13 @@ public class Game implements Runnable {
     }
 
     private void render() {
-        bs = display.getCanvas().getBufferStrategy();
-        if(bs == null){
+        BufferStrategy bs = display.getCanvas().getBufferStrategy();
+        if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
-        g = bs.getDrawGraphics();
+        Graphics g = bs.getDrawGraphics();
+        g.clearRect(0,0, scrWidth, scrHeight);
         //Draw here
 
         //End draw
