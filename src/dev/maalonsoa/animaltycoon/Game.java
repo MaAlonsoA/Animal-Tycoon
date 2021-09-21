@@ -12,29 +12,20 @@ enum GameStatus {
 
 public class Game implements Runnable {
 
-    private final Display display;
-    private final GameStatus gameStatus;
+    private Display display;
+    private GameStatus gameStatus;
     private final int scrWidth;
     private final int scrHeight;
+    private final String title;
     private Thread thread;
 
     public Game(String title, int scrWidth, int scrHeight) {
+        this.title = title;
         this.scrWidth = scrWidth;
         this.scrHeight = scrHeight;
-        display = new Display(title, scrWidth, scrHeight);
         gameStatus = GameStatus.GAME_ACTIVE;
     }
 
-    public void run() {
-
-        while (gameStatus != GameStatus.GAME_END) {
-            tick();
-            render();
-
-        }
-
-        stop();
-    }
 
     private void render() {
         BufferStrategy bs = display.getCanvas().getBufferStrategy();
@@ -43,7 +34,7 @@ public class Game implements Runnable {
             return;
         }
         Graphics g = bs.getDrawGraphics();
-        g.clearRect(0,0, scrWidth, scrHeight);
+        g.clearRect(0, 0, scrWidth, scrHeight);
         //Draw here
 
         //End draw
@@ -54,14 +45,28 @@ public class Game implements Runnable {
     private void tick() {
     }
 
+    private void init() {
+        display = new Display(title, scrWidth, scrHeight);
+    }
+
+    public void run() {
+        init();
+        while (gameStatus != GameStatus.GAME_END) {
+            tick();
+            render();
+        }
+
+        stop();
+    }
 
     public synchronized void start() {
-        thread = new Thread();
+        thread = new Thread(this);
         thread.start();
         run();
     }
 
     public synchronized void stop() {
+        gameStatus = GameStatus.GAME_END;
         try {
             thread.join();
         } catch (InterruptedException e) {
