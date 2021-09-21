@@ -1,7 +1,11 @@
 package dev.maalonsoa.animaltycoon;
 
+import dev.maalonsoa.engine.display.Display;
+import dev.maalonsoa.engine.gfx.ImageLoader;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 enum GameStatus {
     GAME_ACTIVE,
@@ -19,21 +23,31 @@ public class Game implements Runnable {
     private final String title;
     private Thread thread;
 
+    private BufferStrategy bs;
+    private Graphics g;
+
+    private BufferedImage testImage;
+
     public Game(String title, int scrWidth, int scrHeight) {
         this.title = title;
         this.scrWidth = scrWidth;
         this.scrHeight = scrHeight;
-        gameStatus = GameStatus.GAME_ACTIVE;
+        gameStatus = GameStatus.GAME_END;
     }
 
+    private void init() {
+        display = new Display(title, scrWidth, scrHeight);
+
+        testImage = ImageLoader.loadImage("/textures/test.png");
+    }
 
     private void render() {
-        BufferStrategy bs = display.getCanvas().getBufferStrategy();
+        bs = display.getCanvas().getBufferStrategy();
         if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
-        Graphics g = bs.getDrawGraphics();
+        g = bs.getDrawGraphics();
         g.clearRect(0, 0, scrWidth, scrHeight);
         //Draw here
 
@@ -43,10 +57,6 @@ public class Game implements Runnable {
     }
 
     private void tick() {
-    }
-
-    private void init() {
-        display = new Display(title, scrWidth, scrHeight);
     }
 
     public void run() {
@@ -60,12 +70,14 @@ public class Game implements Runnable {
     }
 
     public synchronized void start() {
+        if (gameStatus == GameStatus.GAME_ACTIVE) return;
+        gameStatus = GameStatus.GAME_ACTIVE;
         thread = new Thread(this);
         thread.start();
-        run();
     }
 
     public synchronized void stop() {
+
         gameStatus = GameStatus.GAME_END;
         try {
             thread.join();

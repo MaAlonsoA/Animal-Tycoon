@@ -1,4 +1,4 @@
-package dev.maalonsoa.animaltycoon;
+package dev.maalonsoa.engine.display;
 
 import javax.swing.*;
 import java.awt.*;
