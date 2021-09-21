@@ -2,6 +2,7 @@ package dev.maalonsoa.animaltycoon;
 
 import dev.maalonsoa.engine.display.Display;
 import dev.maalonsoa.engine.gfx.ImageLoader;
+import dev.maalonsoa.engine.gfx.SpriteSheet;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -27,6 +28,7 @@ public class Game implements Runnable {
     private Graphics g;
 
     private BufferedImage testImage;
+    private SpriteSheet sheet;
 
     public Game(String title, int scrWidth, int scrHeight) {
         this.title = title;
@@ -39,6 +41,8 @@ public class Game implements Runnable {
         display = new Display(title, scrWidth, scrHeight);
 
         testImage = ImageLoader.loadImage("/textures/test.png");
+
+        sheet = new SpriteSheet(testImage);
     }
 
     private void render() {
