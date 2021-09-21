@@ -1,6 +1,7 @@
 package dev.maalonsoa.animaltycoon;
 
 import dev.maalonsoa.engine.display.Display;
+import dev.maalonsoa.engine.gfx.Assets;
 import dev.maalonsoa.engine.gfx.ImageLoader;
 import dev.maalonsoa.engine.gfx.SpriteSheet;
 
@@ -27,9 +28,6 @@ public class Game implements Runnable {
     private BufferStrategy bs;
     private Graphics g;
 
-    private BufferedImage testImage;
-    private SpriteSheet sheet;
-
     public Game(String title, int scrWidth, int scrHeight) {
         this.title = title;
         this.scrWidth = scrWidth;
@@ -39,10 +37,7 @@ public class Game implements Runnable {
 
     private void init() {
         display = new Display(title, scrWidth, scrHeight);
-
-        testImage = ImageLoader.loadImage("/textures/test.png");
-
-        sheet = new SpriteSheet(testImage);
+        Assets.init();
     }
 
     private void render() {
@@ -54,7 +49,8 @@ public class Game implements Runnable {
         g = bs.getDrawGraphics();
         g.clearRect(0, 0, scrWidth, scrHeight);
         //Draw here
-
+        g.drawImage(Assets.playerRun, 0, 0, null);
+        g.drawImage(Assets.playerJump, 600, 0, null);
         //End draw
         bs.show();
         g.dispose();
