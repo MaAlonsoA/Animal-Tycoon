@@ -5,12 +5,11 @@ import java.awt.*;
 
 public class Display {
 
-    private JFrame frame;
     private Canvas canvas;
 
-    private String title;
-    private int width;
-    private int height;
+    private final String title;
+    private final int width;
+    private final int height;
 
     public Display(String title, int width, int height) {
         this.title = title;
@@ -21,7 +20,7 @@ public class Display {
     }
 
     private void createDisplay() {
-        frame = new JFrame(title);
+        JFrame frame = new JFrame(title);
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -35,5 +34,9 @@ public class Display {
 
         frame.add(canvas);
         frame.pack();
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
     }
 }
