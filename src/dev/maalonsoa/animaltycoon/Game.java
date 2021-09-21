@@ -49,21 +49,57 @@ public class Game implements Runnable {
         g = bs.getDrawGraphics();
         g.clearRect(0, 0, scrWidth, scrHeight);
         //Draw here
-        g.drawImage(Assets.playerRun, 0, 0, null);
-        g.drawImage(Assets.playerJump, 600, 0, null);
+        g.drawImage(Assets.playerRun, x, y, null);
+
         //End draw
         bs.show();
         g.dispose();
     }
 
+    int x = 0;
+    int y = 0;
+
     private void tick() {
+        x++;
+        if (x > scrWidth) {
+            x = 0;
+            y += 10;
+        }
+        if (y > scrHeight - 500) {
+            x = 0;
+            y = 0;
+        }
     }
 
     public void run() {
         init();
+
+        int fps = 60;
+        double timePerTick = 1000000000 / fps;
+        double delta = 0;
+        long now;
+        long lastTime = System.nanoTime();
+        long timer = 0;
+        int ticks = 0;
+
         while (gameStatus != GameStatus.GAME_END) {
-            tick();
-            render();
+            now = System.nanoTime();
+            delta += (now-lastTime) / timePerTick;
+            timer += now-lastTime;
+            lastTime = now;
+
+            if (delta >= 1){
+                tick();
+                render();
+                ticks ++;
+                delta--;
+            }
+
+            if (timer >= 1000000000){
+                System.out.println("Ticks and frames: " + ticks);
+                ticks = 0;
+                timer = 0;
+            }
         }
 
         stop();
