@@ -1,7 +1,11 @@
 package dev.maalonsoa.animaltycoon;
 
+import dev.maalonsoa.engine.display.Display;
+import dev.maalonsoa.engine.gfx.ImageLoader;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 enum GameStatus {
     GAME_ACTIVE,
@@ -12,38 +16,39 @@ enum GameStatus {
 
 public class Game implements Runnable {
 
-    private final Display display;
-    private final GameStatus gameStatus;
+    private Display display;
+    private GameStatus gameStatus;
     private final int scrWidth;
     private final int scrHeight;
+    private final String title;
     private Thread thread;
 
+    private BufferStrategy bs;
+    private Graphics g;
+
+    private BufferedImage testImage;
+
     public Game(String title, int scrWidth, int scrHeight) {
+        this.title = title;
         this.scrWidth = scrWidth;
         this.scrHeight = scrHeight;
-        display = new Display(title, scrWidth, scrHeight);
-        gameStatus = GameStatus.GAME_ACTIVE;
+        gameStatus = GameStatus.GAME_END;
     }
 
-    public void run() {
+    private void init() {
+        display = new Display(title, scrWidth, scrHeight);
 
-        while (gameStatus != GameStatus.GAME_END) {
-            tick();
-            render();
-
-        }
-
-        stop();
+        testImage = ImageLoader.loadImage("/textures/test.png");
     }
 
     private void render() {
-        BufferStrategy bs = display.getCanvas().getBufferStrategy();
+        bs = display.getCanvas().getBufferStrategy();
         if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
-        Graphics g = bs.getDrawGraphics();
-        g.clearRect(0,0, scrWidth, scrHeight);
+        g = bs.getDrawGraphics();
+        g.clearRect(0, 0, scrWidth, scrHeight);
         //Draw here
 
         //End draw
@@ -54,14 +59,26 @@ public class Game implements Runnable {
     private void tick() {
     }
 
+    public void run() {
+        init();
+        while (gameStatus != GameStatus.GAME_END) {
+            tick();
+            render();
+        }
+
+        stop();
+    }
 
     public synchronized void start() {
-        thread = new Thread();
+        if (gameStatus == GameStatus.GAME_ACTIVE) return;
+        gameStatus = GameStatus.GAME_ACTIVE;
+        thread = new Thread(this);
         thread.start();
-        run();
     }
 
     public synchronized void stop() {
+
+        gameStatus = GameStatus.GAME_END;
         try {
             thread.join();
         } catch (InterruptedException e) {
