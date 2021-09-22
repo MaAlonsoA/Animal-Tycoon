@@ -1,5 +1,6 @@
 package dev.maalonsoa.animaltycoon;
 
+import dev.maalonsoa.engine.State;
 import dev.maalonsoa.engine.display.Display;
 import dev.maalonsoa.engine.gfx.Assets;
 import dev.maalonsoa.engine.gfx.ImageLoader;
@@ -28,6 +29,8 @@ public class Game implements Runnable {
     private BufferStrategy bs;
     private Graphics g;
 
+    private State gameState;
+
     public Game(String title, int scrWidth, int scrHeight) {
         this.title = title;
         this.scrWidth = scrWidth;
@@ -38,6 +41,9 @@ public class Game implements Runnable {
     private void init() {
         display = new Display(title, scrWidth, scrHeight);
         Assets.init();
+
+        gameState = new GameState();
+        State.setState(gameState);
     }
 
     private void render() {
@@ -49,7 +55,9 @@ public class Game implements Runnable {
         g = bs.getDrawGraphics();
         g.clearRect(0, 0, scrWidth, scrHeight);
         //Draw here
-        g.drawImage(Assets.playerRun, x, y, null);
+        if (State.getState() != null){
+            State.getState().render(g);
+        }
 
         //End draw
         bs.show();
@@ -60,14 +68,8 @@ public class Game implements Runnable {
     int y = 0;
 
     private void tick() {
-        x++;
-        if (x > scrWidth) {
-            x = 0;
-            y += 10;
-        }
-        if (y > scrHeight - 500) {
-            x = 0;
-            y = 0;
+        if (State.getState() != null){
+            State.getState().ticks();
         }
     }
 
@@ -84,18 +86,18 @@ public class Game implements Runnable {
 
         while (gameStatus != GameStatus.GAME_END) {
             now = System.nanoTime();
-            delta += (now-lastTime) / timePerTick;
-            timer += now-lastTime;
+            delta += (now - lastTime) / timePerTick;
+            timer += now - lastTime;
             lastTime = now;
 
-            if (delta >= 1){
+            if (delta >= 1) {
                 tick();
                 render();
-                ticks ++;
+                ticks++;
                 delta--;
             }
 
-            if (timer >= 1000000000){
+            if (timer >= 1000000000) {
                 System.out.println("Ticks and frames: " + ticks);
                 ticks = 0;
                 timer = 0;
