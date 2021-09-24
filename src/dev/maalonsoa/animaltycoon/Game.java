@@ -1,5 +1,6 @@
 package dev.maalonsoa.animaltycoon;
 
+import dev.maalonsoa.animaltycoon.states.MenuState;
 import dev.maalonsoa.engine.logic.State;
 import dev.maalonsoa.engine.display.Display;
 import dev.maalonsoa.engine.gfx.Assets;
@@ -41,8 +42,8 @@ public class Game implements Runnable {
         display = new Display(title, scrWidth, scrHeight);
         Assets.init();
 
-        gameState = new GameState();
-        menuState = new MenuState();
+        gameState = new GameState(this);
+        menuState = new MenuState(this);
         
         State.setState(gameState);
     }
