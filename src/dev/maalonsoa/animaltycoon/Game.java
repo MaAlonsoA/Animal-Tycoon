@@ -26,7 +26,9 @@ public class Game implements Runnable {
     private BufferStrategy bs;
     private Graphics g;
 
+    //States
     private State gameState;
+    private State menuState;
 
     public Game(String title, int scrWidth, int scrHeight) {
         this.title = title;
@@ -40,6 +42,8 @@ public class Game implements Runnable {
         Assets.init();
 
         gameState = new GameState();
+        menuState = new MenuState();
+        
         State.setState(gameState);
     }
 
