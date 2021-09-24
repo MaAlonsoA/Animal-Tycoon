@@ -1,14 +1,11 @@
 package dev.maalonsoa.animaltycoon;
 
-import dev.maalonsoa.engine.State;
+import dev.maalonsoa.engine.logic.State;
 import dev.maalonsoa.engine.display.Display;
 import dev.maalonsoa.engine.gfx.Assets;
-import dev.maalonsoa.engine.gfx.ImageLoader;
-import dev.maalonsoa.engine.gfx.SpriteSheet;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 enum GameStatus {
     GAME_ACTIVE,
@@ -69,7 +66,7 @@ public class Game implements Runnable {
 
     private void tick() {
         if (State.getState() != null){
-            State.getState().ticks();
+            State.getState().tick();
         }
     }
 

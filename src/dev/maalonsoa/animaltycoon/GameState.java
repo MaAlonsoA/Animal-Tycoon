@@ -1,6 +1,6 @@
 package dev.maalonsoa.animaltycoon;
 
-import dev.maalonsoa.engine.State;
+import dev.maalonsoa.engine.logic.State;
 import dev.maalonsoa.engine.gfx.Assets;
 
 import java.awt.*;
@@ -11,7 +11,7 @@ public class GameState extends State {
 
     }
     @Override
-    public void ticks() {
+    public void tick() {
 
     }
 

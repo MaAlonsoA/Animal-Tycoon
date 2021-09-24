@@ -1,4 +1,4 @@
-package dev.maalonsoa.engine;
+package dev.maalonsoa.engine.logic;
 
 import java.awt.*;
 
@@ -14,7 +14,7 @@ public abstract class State {
         return currentState;
     }
 
-    public abstract void ticks();
+    public abstract void tick();
 
     public abstract void render(Graphics g);
 
