@@ -74,6 +74,7 @@ public class Game implements Runnable {
     int y = 0;
 
     private void tick() {
+        keyManager.tick();
         if (State.getState() != null){
             State.getState().tick();
         }
@@ -111,6 +112,9 @@ public class Game implements Runnable {
         }
 
         stop();
+    }
+    public KeyManager getKeyManager(){
+        return keyManager;
     }
 
     public synchronized void start() {
