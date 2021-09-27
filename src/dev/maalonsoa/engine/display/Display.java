@@ -6,6 +6,7 @@ import java.awt.*;
 public class Display {
 
     private Canvas canvas;
+    private JFrame frame;
 
     private final String title;
     private final int width;
@@ -20,7 +21,7 @@ public class Display {
     }
 
     private void createDisplay() {
-        JFrame frame = new JFrame(title);
+        frame = new JFrame(title);
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -31,6 +32,7 @@ public class Display {
         canvas.setPreferredSize(new Dimension(width, height));
         canvas.setMaximumSize(new Dimension(width, height));
         canvas.setMinimumSize(new Dimension(width, height));
+        canvas.setFocusable(false);
 
         frame.add(canvas);
         frame.pack();
@@ -38,5 +40,9 @@ public class Display {
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    public JFrame getFrame(){
+        return frame;
     }
 }

@@ -1,13 +1,13 @@
 package dev.maalonsoa.animaltycoon;
 
+import dev.maalonsoa.animaltycoon.states.MenuState;
+import dev.maalonsoa.engine.input.KeyManager;
+import dev.maalonsoa.engine.logic.State;
 import dev.maalonsoa.engine.display.Display;
 import dev.maalonsoa.engine.gfx.Assets;
-import dev.maalonsoa.engine.gfx.ImageLoader;
-import dev.maalonsoa.engine.gfx.SpriteSheet;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 enum GameStatus {
     GAME_ACTIVE,
@@ -28,16 +28,28 @@ public class Game implements Runnable {
     private BufferStrategy bs;
     private Graphics g;
 
+    //States
+    private State gameState;
+    private State menuState;
+    private KeyManager keyManager;
+
     public Game(String title, int scrWidth, int scrHeight) {
         this.title = title;
         this.scrWidth = scrWidth;
         this.scrHeight = scrHeight;
         gameStatus = GameStatus.GAME_END;
+        keyManager = new KeyManager();
     }
 
     private void init() {
         display = new Display(title, scrWidth, scrHeight);
+        display.getFrame().addKeyListener(keyManager);
         Assets.init();
+
+        gameState = new GameState(this);
+        menuState = new MenuState(this);
+        
+        State.setState(gameState);
     }
 
     private void render() {
@@ -49,7 +61,9 @@ public class Game implements Runnable {
         g = bs.getDrawGraphics();
         g.clearRect(0, 0, scrWidth, scrHeight);
         //Draw here
-        g.drawImage(Assets.playerRun, x, y, null);
+        if (State.getState() != null){
+            State.getState().render(g);
+        }
 
         //End draw
         bs.show();
@@ -60,14 +74,9 @@ public class Game implements Runnable {
     int y = 0;
 
     private void tick() {
-        x++;
-        if (x > scrWidth) {
-            x = 0;
-            y += 10;
-        }
-        if (y > scrHeight - 500) {
-            x = 0;
-            y = 0;
+        keyManager.tick();
+        if (State.getState() != null){
+            State.getState().tick();
         }
     }
 
@@ -84,18 +93,18 @@ public class Game implements Runnable {
 
         while (gameStatus != GameStatus.GAME_END) {
             now = System.nanoTime();
-            delta += (now-lastTime) / timePerTick;
-            timer += now-lastTime;
+            delta += (now - lastTime) / timePerTick;
+            timer += now - lastTime;
             lastTime = now;
 
-            if (delta >= 1){
+            if (delta >= 1) {
                 tick();
                 render();
-                ticks ++;
+                ticks++;
                 delta--;
             }
 
-            if (timer >= 1000000000){
+            if (timer >= 1000000000) {
                 System.out.println("Ticks and frames: " + ticks);
                 ticks = 0;
                 timer = 0;
@@ -103,6 +112,9 @@ public class Game implements Runnable {
         }
 
         stop();
+    }
+    public KeyManager getKeyManager(){
+        return keyManager;
     }
 
     public synchronized void start() {
