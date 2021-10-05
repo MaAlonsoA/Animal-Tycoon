@@ -1,6 +1,7 @@
 package dev.maalonsoa.animaltycoon;
 
 import dev.maalonsoa.animaltycoon.states.MenuState;
+import dev.maalonsoa.engine.input.KeyManager;
 import dev.maalonsoa.engine.logic.State;
 import dev.maalonsoa.engine.display.Display;
 import dev.maalonsoa.engine.gfx.Assets;
@@ -30,16 +31,19 @@ public class Game implements Runnable {
     //States
     private State gameState;
     private State menuState;
+    private KeyManager keyManager;
 
     public Game(String title, int scrWidth, int scrHeight) {
         this.title = title;
         this.scrWidth = scrWidth;
         this.scrHeight = scrHeight;
         gameStatus = GameStatus.GAME_END;
+        keyManager = new KeyManager();
     }
 
     private void init() {
         display = new Display(title, scrWidth, scrHeight);
+        display.getFrame().addKeyListener(keyManager);
         Assets.init();
 
         gameState = new GameState(this);
@@ -70,6 +74,7 @@ public class Game implements Runnable {
     int y = 0;
 
     private void tick() {
+        keyManager.tick();
         if (State.getState() != null){
             State.getState().tick();
         }
@@ -107,6 +112,9 @@ public class Game implements Runnable {
         }
 
         stop();
+    }
+    public KeyManager getKeyManager(){
+        return keyManager;
     }
 
     public synchronized void start() {
