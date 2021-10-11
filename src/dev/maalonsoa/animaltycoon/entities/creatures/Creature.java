@@ -1,5 +1,6 @@
 package dev.maalonsoa.animaltycoon.entities.creatures;
 
+import dev.maalonsoa.animaltycoon.Game;
 import dev.maalonsoa.engine.logic.Entity;
 
 public abstract class Creature extends Entity {
@@ -30,8 +31,8 @@ public abstract class Creature extends Entity {
         this.yMove = yMove;
     }
 
-    public Creature(float x, float y, int width, int height) {
-        super(x, y, width, height);
+    public Creature(Game game, float x, float y, int width, int height) {
+        super(game, x, y, width, height);
         health = DEFAULT_HEALTH;
         speed = DEFAULT_SPEED;
         xMove = 0;
@@ -54,7 +55,7 @@ public abstract class Creature extends Entity {
         this.speed = speed;
     }
 
-    public void move (){
+    public void move() {
         x += xMove;
         y += yMove;
     }

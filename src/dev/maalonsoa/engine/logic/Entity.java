@@ -1,22 +1,26 @@
 package dev.maalonsoa.engine.logic;
 
+import dev.maalonsoa.animaltycoon.Game;
+
 import java.awt.*;
 
 public abstract class Entity {
 
-       protected  float x, y;
-       protected int width, height;
+    protected Game game;
+    protected float x, y;
+    protected int width, height;
 
-       public Entity (float x, float y, int width, int height){
-           this.x = x;
-           this.y = y;
-           this.width = width;
-           this.height = height;
-       }
+    public Entity(Game game, float x, float y, int width, int height) {
+        this.game = game;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
 
-       public abstract void tick();
+    public abstract void tick();
 
-       public abstract void render(Graphics g);
+    public abstract void render(Graphics g);
 
     public float getX() {
         return x;
