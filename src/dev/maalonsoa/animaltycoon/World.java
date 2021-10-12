@@ -1,8 +1,7 @@
-package dev.maalonsoa.engine.logic;
+package dev.maalonsoa.animaltycoon;
 
 import dev.maalonsoa.engine.tiles.Tile;
 import dev.maalonsoa.engine.utils.Utils;
-import jdk.jshell.execution.Util;
 
 import java.awt.*;
 
@@ -12,8 +11,10 @@ public class World {
     private int spawnX;
     private int spawnY;
     private int[][] tiles;
+    private Game game;
 
-    public World(String path) {
+    public World(Game game, String path) {
+        this.game = game;
         loadWorld(path);
     }
 
@@ -24,7 +25,8 @@ public class World {
     public void render(Graphics g) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                getTile(x, y).render(g, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
+                getTile(x, y).render(g, (int) (x * Tile.TILE_WIDTH - game.getGameCamera().getxOffset()),
+                        (int) (y * Tile.TILE_HEIGHT - game.getGameCamera().getyOffset()));
             }
         }
     }
