@@ -1,6 +1,7 @@
 package dev.maalonsoa.animaltycoon;
 
 import dev.maalonsoa.animaltycoon.states.MenuState;
+import dev.maalonsoa.engine.camera.GameCamera;
 import dev.maalonsoa.engine.input.KeyManager;
 import dev.maalonsoa.engine.logic.State;
 import dev.maalonsoa.engine.display.Display;
@@ -28,6 +29,10 @@ public class Game implements Runnable {
     private BufferStrategy bs;
     private Graphics g;
 
+    //Camera
+
+    private GameCamera gameCamera;
+
     //States
     private State gameState;
     private State menuState;
@@ -46,9 +51,10 @@ public class Game implements Runnable {
         display.getFrame().addKeyListener(keyManager);
         Assets.init();
 
+        gameCamera = new GameCamera(0, 0, this);
         gameState = new GameState(this);
         menuState = new MenuState(this);
-        
+
         State.setState(gameState);
     }
 
@@ -61,7 +67,7 @@ public class Game implements Runnable {
         g = bs.getDrawGraphics();
         g.clearRect(0, 0, scrWidth, scrHeight);
         //Draw here
-        if (State.getState() != null){
+        if (State.getState() != null) {
             State.getState().render(g);
         }
 
@@ -75,7 +81,7 @@ public class Game implements Runnable {
 
     private void tick() {
         keyManager.tick();
-        if (State.getState() != null){
+        if (State.getState() != null) {
             State.getState().tick();
         }
     }
@@ -113,8 +119,21 @@ public class Game implements Runnable {
 
         stop();
     }
-    public KeyManager getKeyManager(){
+
+    public KeyManager getKeyManager() {
         return keyManager;
+    }
+
+    public GameCamera getGameCamera() {
+        return gameCamera;
+    }
+
+    public int getScrWidth() {
+        return scrWidth;
+    }
+
+    public int getScrHeight() {
+        return scrWidth;
     }
 
     public synchronized void start() {
