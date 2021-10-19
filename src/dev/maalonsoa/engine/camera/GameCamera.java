@@ -1,23 +1,24 @@
 package dev.maalonsoa.engine.camera;
 
 import dev.maalonsoa.animaltycoon.Game;
+import dev.maalonsoa.animaltycoon.Handler;
 import dev.maalonsoa.engine.logic.Entity;
 
 public class GameCamera {
 
     private float xOffset;
     private float yOffset;
-    private Game game;
+    private Handler handler;
 
-    public GameCamera(float xOffset, float yOffset, Game game) {
+    public GameCamera(float xOffset, float yOffset, Handler handler) {
         this.xOffset = xOffset;
         this.yOffset = yOffset;
-        this.game = game;
+        this.handler = handler;
     }
 
     public void centerOnEntity(Entity entity) {
-        xOffset = entity.getX() - game.getScrWidth() / 2 + entity.getWidth() / 2;
-        yOffset = entity.getY() - game.getScrHeight() / 2 + entity.getHeight() / 2;
+        xOffset = entity.getX() - handler.getScrWidth() / 2 + entity.getWidth() / 2;
+        yOffset = entity.getY() - handler.getScrHeight() / 2 + entity.getHeight() / 2;
     }
 
     public void move(float xAmt, float yAmt) {
