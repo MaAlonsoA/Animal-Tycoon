@@ -9,7 +9,7 @@ public class Handler {
     private World world;
 
 
-    public Handler(Game game, World world) {
+    public Handler(Game game) {
         this.game = game;
     }
 

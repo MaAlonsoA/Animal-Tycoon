@@ -1,6 +1,7 @@
 package dev.maalonsoa.engine.logic;
 
 import dev.maalonsoa.animaltycoon.Game;
+import dev.maalonsoa.animaltycoon.Handler;
 
 import java.awt.*;
 
@@ -17,11 +18,12 @@ public abstract class State {
     }
 
     //CLASS
-    protected Game game;
+    protected Handler handler;
 
-    public State (Game game){
-        this.game = game;
+    public State(Handler handler) {
+        this.handler = handler;
     }
+
     public abstract void tick();
 
     public abstract void render(Graphics g);

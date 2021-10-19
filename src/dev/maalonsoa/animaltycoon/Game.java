@@ -1,5 +1,6 @@
 package dev.maalonsoa.animaltycoon;
 
+import dev.maalonsoa.animaltycoon.states.GameState;
 import dev.maalonsoa.animaltycoon.states.MenuState;
 import dev.maalonsoa.engine.camera.GameCamera;
 import dev.maalonsoa.engine.input.KeyManager;
@@ -30,8 +31,10 @@ public class Game implements Runnable {
     private Graphics g;
 
     //Camera
-
     private GameCamera gameCamera;
+
+    //Handler
+    private Handler handler;
 
     //States
     private State gameState;
@@ -50,10 +53,11 @@ public class Game implements Runnable {
         display = new Display(title, scrWidth, scrHeight);
         display.getFrame().addKeyListener(keyManager);
         Assets.init();
+        handler = new Handler(this);
 
         gameCamera = new GameCamera(0, 0, this);
-        gameState = new GameState(this);
-        menuState = new MenuState(this);
+        gameState = new GameState(handler);
+        menuState = new MenuState(handler);
 
         State.setState(gameState);
     }
