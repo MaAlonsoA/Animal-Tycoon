@@ -1,6 +1,5 @@
 package dev.maalonsoa.engine.logic;
 
-import dev.maalonsoa.animaltycoon.Game;
 import dev.maalonsoa.animaltycoon.Handler;
 
 import java.awt.*;
@@ -8,8 +7,12 @@ import java.awt.*;
 public abstract class Entity {
 
     protected Handler handler;
-    protected float x, y;
-    protected int width, height;
+    protected float x;
+    protected float y;
+    protected int width;
+    protected int height;
+    protected Rectangle bounds;
+
 
     public Entity(Handler handler, float x, float y, int width, int height) {
         this.handler = handler;
@@ -17,6 +20,8 @@ public abstract class Entity {
         this.y = y;
         this.width = width;
         this.height = height;
+
+        bounds = new Rectangle(0, 0, width, height);
     }
 
     public abstract void tick();

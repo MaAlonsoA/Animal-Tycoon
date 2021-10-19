@@ -4,6 +4,8 @@ import dev.maalonsoa.animaltycoon.Game;
 import dev.maalonsoa.animaltycoon.Handler;
 import dev.maalonsoa.engine.logic.Entity;
 
+import java.awt.*;
+
 public abstract class Creature extends Entity {
 
     public static final int DEFAULT_HEALTH = 10;
@@ -54,6 +56,16 @@ public abstract class Creature extends Entity {
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    void collisionBox(Graphics g, boolean active) {
+        if (active) {
+            g.setColor(Color.red);
+            g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+                    (int) (y + bounds.y - handler.getGameCamera().getyOffset()),
+                    bounds.width, bounds.height);
+        }
+
     }
 
     public void move() {
