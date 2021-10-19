@@ -16,8 +16,8 @@ public class GameState extends State {
     public GameState(Handler handler) {
         super(handler);
         player = new Player(handler, 400, 400);
-        handler.setWorld(world);
         world = new World(handler, "res/worlds/world1.txt");
+        handler.setWorld(world);
     }
 
     @Override
