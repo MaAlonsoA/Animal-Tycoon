@@ -3,6 +3,7 @@ package dev.maalonsoa.animaltycoon.entities.creatures;
 import dev.maalonsoa.animaltycoon.Game;
 import dev.maalonsoa.animaltycoon.Handler;
 import dev.maalonsoa.engine.logic.Entity;
+import dev.maalonsoa.engine.tiles.Tile;
 
 import java.awt.*;
 
@@ -69,7 +70,44 @@ public abstract class Creature extends Entity {
     }
 
     public void move() {
-        x += xMove;
-        y += yMove;
+        moveX();
+        moveY();
+    }
+
+    public void moveX() {
+        if (xMove > 0) {
+            int tempMove = (int) (x + xMove + bounds.x + bounds.width) / Tile.TILE_WIDTH;
+            if (!collisionWithTile(tempMove, (int) (y + bounds.y) / Tile.TILE_HEIGHT)
+                    && !collisionWithTile(tempMove, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)) {
+                x += xMove;
+            }
+        } else if (xMove < 0) {
+            int toMove = (int) (x + xMove + bounds.x) / Tile.TILE_WIDTH;
+            if (!collisionWithTile(toMove, (int) (y + bounds.y) / Tile.TILE_HEIGHT)
+                    && !collisionWithTile(toMove, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)) {
+                x += xMove;
+            }
+        }
+    }
+
+    public void moveY() {
+        if (yMove < 0) {
+            int tempMove = (int) (y + yMove + bounds.y) / Tile.TILE_HEIGHT;
+            if (!collisionWithTile((int) (x + bounds.x) / Tile.TILE_WIDTH, tempMove)
+                    && !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILE_WIDTH, tempMove)) {
+                y += yMove;
+            }
+        } else if (yMove > 0) {
+            int tempMove = (int) (y + yMove + +bounds.y + bounds.height) / Tile.TILE_HEIGHT;
+            if (!collisionWithTile((int) (x + bounds.x) / Tile.TILE_WIDTH, tempMove)
+                    && !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILE_WIDTH, tempMove)) {
+                y += yMove;
+            }
+
+        }
+    }
+
+    protected boolean collisionWithTile(int x, int y) {
+        return handler.getWorld().getTile(x, y).isSolid();
     }
 }

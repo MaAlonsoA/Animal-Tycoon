@@ -46,6 +46,6 @@ public class Player extends Creature {
         g.drawImage(Assets.player, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
 
         //Show collision Box
-        collisionBox(g, false);
+        collisionBox(g, true);
     }
 }
