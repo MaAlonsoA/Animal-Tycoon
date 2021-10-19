@@ -80,12 +80,16 @@ public abstract class Creature extends Entity {
             if (!collisionWithTile(tempMove, (int) (y + bounds.y) / Tile.TILE_HEIGHT)
                     && !collisionWithTile(tempMove, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)) {
                 x += xMove;
+            } else { //reset position to fix a little gap between collision box and next tile
+                x = tempMove * Tile.TILE_WIDTH - bounds.x - bounds.width - 1;
             }
         } else if (xMove < 0) {
-            int toMove = (int) (x + xMove + bounds.x) / Tile.TILE_WIDTH;
-            if (!collisionWithTile(toMove, (int) (y + bounds.y) / Tile.TILE_HEIGHT)
-                    && !collisionWithTile(toMove, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)) {
+            int tempMove = (int) (x + xMove + bounds.x) / Tile.TILE_WIDTH;
+            if (!collisionWithTile(tempMove, (int) (y + bounds.y) / Tile.TILE_HEIGHT)
+                    && !collisionWithTile(tempMove, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)) {
                 x += xMove;
+            } else {
+                x = tempMove * Tile.TILE_WIDTH + bounds.x + bounds.width + 1;
             }
         }
     }
@@ -96,12 +100,16 @@ public abstract class Creature extends Entity {
             if (!collisionWithTile((int) (x + bounds.x) / Tile.TILE_WIDTH, tempMove)
                     && !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILE_WIDTH, tempMove)) {
                 y += yMove;
+            } else {
+                y = tempMove * Tile.TILE_HEIGHT + Tile.TILE_HEIGHT - bounds.y;
             }
         } else if (yMove > 0) {
             int tempMove = (int) (y + yMove + +bounds.y + bounds.height) / Tile.TILE_HEIGHT;
             if (!collisionWithTile((int) (x + bounds.x) / Tile.TILE_WIDTH, tempMove)
                     && !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILE_WIDTH, tempMove)) {
                 y += yMove;
+            } else {
+                y = tempMove * Tile.TILE_HEIGHT - bounds.y - bounds.height - 1;
             }
 
         }
