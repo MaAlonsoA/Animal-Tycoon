@@ -32,7 +32,6 @@ public class Animation {
     }
 
     public BufferedImage getCurrentFrame() {
-        System.out.println(index);
         return frames[index];
     }
 }
